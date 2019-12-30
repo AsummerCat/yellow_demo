@@ -22,12 +22,9 @@ class YellowSpidersSpider(scrapy.Spider):
         for i in index_list:
             # 遍历节点
             data = YellowDownloadItem()
-            # data['title'] = i.xpath("./div[@class='photo-info']/span/text()").extract_first()
+            data['title'] = i.xpath(".//a[@class='movie-box']/div[@class='photo-info']/span/text()").extract()[0]
             data['url'] = i.xpath("./a[@class='movie-box']/@href").extract_first()
-            # print(data['title'])
-            # print(data['url'])
-            yield scrapy.Request(self.detail_url_prefix.format(data['url']), callback=self.detail_pares,
-                                 meta={"item": data})
+            yield scrapy.Request(self.detail_url_prefix.format(data['url']), callback=self.detail_pares,meta={"item": data})
 
             # 获取最大页数
         max_page = response.xpath("//div[@class='text-center']/ul/li/a[@class='end']/text()").extract_first()
@@ -43,21 +40,16 @@ class YellowSpidersSpider(scrapy.Spider):
             # 遍历节点
             data = YellowDownloadItem()
             data['url'] = i.xpath("./a[@class='movie-box']/@href").extract_first()
-        yield scrapy.Request(
-            self.detail_url_prefix.format(data['url']), callback=self.detail_pares, meta={"item": data})
+            yield scrapy.Request(self.detail_url_prefix.format(data['url']), callback=self.detail_pares, meta={"item": data})
 
     # 获取详情页的数据
     def detail_pares(self, response):
-        # print(response.text)
         data = response.meta["item"]
-        my_video = response.xpath("//video[@id='my-video']")
-
-        for item in my_video:
-            print(my_video.xpath("./source/@src").extract_first())
-        # data["down_path"] = response.xpath("//video[@id='my-video']/source[2]/@src").extract_first()
+        my_video = response.xpath("//source")
+        data["down_path"] = my_video[1].xpath("./@src").extract_first()
         # print(data["down_path"])
-        # yield data
+        yield data
 
 
 
-url='https://mm006.xyz/v.php?v=MjQyNzE1NDkvc2x1dHR5X2JydW5ldHRlX2JhYmVfaGFzX2FfZnVja190aGF0X2xlYXZlc19oZXJfb3JnYXNtaWM='
+# url='https://mm006.xyz/v.php?v=MjQyNzE1NDkvc2x1dHR5X2JydW5ldHRlX2JhYmVfaGFzX2FfZnVja190aGF0X2xlYXZlc19oZXJfb3JnYXNtaWM='
