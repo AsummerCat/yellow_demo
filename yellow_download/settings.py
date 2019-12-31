@@ -52,9 +52,11 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+DOWNLOADER_MIDDLEWARES = {
 #    'yellow_download.middlewares.YellowDownloadDownloaderMiddleware': 543,
-#}
+# 伪装user_agent
+   'scrapy_dongman_demo.middlewares.my_user_agent': 545,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -92,4 +94,8 @@ ITEM_PIPELINES = {
 # 修改编码为utf-8
 FEED_EXPORT_ENCODING = 'utf-8'
 
+# 捕获HttpCodes 重试请求
 RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
+
+# # 定义保存路径
+IMAGES_STORE = 'E:\测试下载'
