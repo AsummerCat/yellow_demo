@@ -12,6 +12,7 @@ import scrapy
 
 '''
 
+
 class YellowDownloadItem(scrapy.Item):
     # define the fields for your item here like:
     # 标题
@@ -22,3 +23,5 @@ class YellowDownloadItem(scrapy.Item):
     down_path = scrapy.Field()
     # 下载电脑的地址
     info_down_path = scrapy.Field()
+    # 下载本地目录
+    file_path = scrapy.Field()
