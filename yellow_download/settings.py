@@ -64,9 +64,9 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'yellow_download.pipelines.YellowDownloadPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'yellow_download.pipelines.YellowDownloadPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
@@ -91,3 +91,5 @@ ROBOTSTXT_OBEY = False
 
 # 修改编码为utf-8
 FEED_EXPORT_ENCODING = 'utf-8'
+
+RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
