@@ -55,7 +55,7 @@ ROBOTSTXT_OBEY = False
 DOWNLOADER_MIDDLEWARES = {
 #    'yellow_download.middlewares.YellowDownloadDownloaderMiddleware': 543,
 # 伪装user_agent
-   'scrapy_dongman_demo.middlewares.my_user_agent': 545,
+   'yellow_download.middlewares.my_user_agent': 545,
 }
 
 # Enable or disable extensions

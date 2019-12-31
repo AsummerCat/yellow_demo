@@ -27,13 +27,13 @@ class YellowSpidersSpider(scrapy.Spider):
             yield scrapy.Request(self.detail_url_prefix.format(data['url']), callback=self.detail_pares,
                                  meta={"item": data})
 
-        #     # 获取最大页数
-        # max_page = response.xpath("//div[@class='text-center']/ul/li/a[@class='end']/text()").extract_first()
-        # # 最大页数存在
-        # if max_page:
-        #     for i in range(2, int(max_page) + 1):
-        #         next_url = self.url_prefix + str(i)
-        #         yield scrapy.Request(next_url, callback=self.next_parse)
+            # 获取最大页数
+        max_page = response.xpath("//div[@class='text-center']/ul/li/a[@class='end']/text()").extract_first()
+        # 最大页数存在
+        if max_page:
+            for i in range(2, int(max_page) + 1):
+                next_url = self.url_prefix + str(i)
+                yield scrapy.Request(next_url, callback=self.next_parse)
 
     # 下一页
     def next_parse(self, response):
