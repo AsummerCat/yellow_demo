@@ -10,6 +10,7 @@
 '''
 import os
 import re
+import time
 import uuid
 from pyaria2 import Aria2RPC
 
@@ -48,11 +49,12 @@ class YellowDownloadPipeline(object):
         down_path = item["down_path"]
         info_down_path = item["info_down_path"]
         path = item["file_path"]
-        print("名称:{}=================下载地址:{}".format(title, info_down_path))
         self.get_file_from_url(path, down_path, title)
 
     # 根据文件链接+文件名称 添加下载任务
     def get_file_from_url(self, path, link, file_name):
+        # 延时60s加载下一个
+        time.sleep(60)
         jsonrpc = Aria2RPC()
         options = {"dir": path, "out": file_name, }
         res = jsonrpc.addUri([link], options=options)
