@@ -67,16 +67,16 @@ class YellowDownloadPipeline(object):
             print("暂未识别系统无法下载内容")
 
 
-def get_file_from_url_by_windows(self, path, link, file_name):
+def get_file_from_url_by_windows(path, link, file_name):
     jsonrpc = Aria2RPC()
     options = {"dir": path, "out": file_name, }
     res = jsonrpc.addUri([link], options=options)
 
 
 # json形式根据文件链接+文件名称 添加下载任务
-def get_file_from_url_by_mac(self, path, link, file_name):
+def get_file_from_url_by_mac(path, link, file_name):
     options = {"dir": path, "out": file_name}
-    params = [link, options]
+    params = [[link], options]
     url = "http://localhost:6800/jsonrpc"
     jsonreq = json.dumps({'jsonrpc': '2.0', 'id': 'qwer',
                           'method': 'aria2.addUri',
