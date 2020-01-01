@@ -17,7 +17,8 @@ from pyaria2 import Aria2RPC
 class YellowDownloadPipeline(object):
     def process_item(self, item, spider):
         title = "".join(re.findall('[\u4e00-\u9fa5a-zA-Z0-9]+', item['title'], re.S))
-        path = 'E:\\测试下载'
+        # path = 'E:\\测试下载'
+        path = '/Users/cat/Downloads'
         # 下载本地目录
         item["file_path"] = path
         # 判断文件夹是否存在 不存在直接makedirs 创建多级目录
