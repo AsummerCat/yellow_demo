@@ -12,6 +12,7 @@ import json
 import os
 import platform
 import re
+import time
 import uuid
 
 import requests
@@ -48,6 +49,7 @@ class YellowDownloadPipeline(object):
         if not os.path.exists(info_down_path):
             print("开始下载:{}".format(title))
             self.addTask(item=item)
+            time.sleep(17)
         else:
             print(title + "====================>>>>已存在")
         return item
@@ -57,6 +59,7 @@ class YellowDownloadPipeline(object):
     '''
 
     def addTask(self, item):
+
         title = item["title"]
         down_path = item["down_path"]
         info_down_path = item["info_down_path"]
