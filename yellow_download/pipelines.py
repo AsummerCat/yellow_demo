@@ -16,13 +16,21 @@ import uuid
 
 import requests
 from pyaria2 import Aria2RPC
+from yellow_download.settings import MAC_DOWNLOAD_PATH
+from yellow_download.settings import WIN_DOWNLOAD_PATH
 
 
 class YellowDownloadPipeline(object):
     def process_item(self, item, spider):
         title = "".join(re.findall('[\u4e00-\u9fa5a-zA-Z0-9]+', item['title'], re.S))
-        # path = 'E:\\测试下载'
-        path = '/Users/cat/Downloads'
+        path = ""
+        info_os = check_os()
+        if "Windows" == info_os:
+            path = MAC_DOWNLOAD_PATH
+        elif "macOS" == info_os:
+            path = WIN_DOWNLOAD_PATH
+        else:
+            print("暂未识别系统无法下载内容")
         # 下载本地目录
         item["file_path"] = path
         # 判断文件夹是否存在 不存在直接makedirs 创建多级目录

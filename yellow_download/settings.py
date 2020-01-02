@@ -98,4 +98,6 @@ FEED_EXPORT_ENCODING = 'utf-8'
 RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
 
 # # 定义保存路径
-IMAGES_STORE = 'E:\测试下载'
+MAC_DOWNLOAD_PATH = 'E:\测试下载'
+WIN_DOWNLOAD_PATH = '/Users/cat/Downloads'
+
