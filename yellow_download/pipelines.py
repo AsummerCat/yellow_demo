@@ -49,7 +49,7 @@ class YellowDownloadPipeline(object):
         if not os.path.exists(info_down_path):
             print("开始下载:{}".format(title))
             self.addTask(item=item)
-            time.sleep(17)
+            time.sleep(20)
         else:
             print(title + "====================>>>>已存在")
         return item
