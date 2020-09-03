@@ -10,8 +10,8 @@ class YellowSpidersSpider(scrapy.Spider):
     name = 'yellow_spiders'
     allowed_domains = ['mm006.xyz']
     # 搜索的内容
-    # 艺校 老师 漂亮女神 学生妹
-    key = urllib.parse.quote("学生妹")
+    # 
+    key = urllib.parse.quote("大兄弟")
     # key = '%E6%A0%A1%E8%8A%B1'
     # 详细页
     detail_url_prefix = "https://mm006.xyz{}"
