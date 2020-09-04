@@ -25,3 +25,9 @@ class YellowDownloadItem(scrapy.Item):
     info_down_path = scrapy.Field()
     # 下载本地目录
     file_path = scrapy.Field()
+
+    #以下部分是mienav的
+    detail_vcr_html = scrapy.Field()
+
+
+
