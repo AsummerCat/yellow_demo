@@ -1,9 +1,9 @@
 data = '''
 [settings]
-default = images.settings
+default = yellow_download.settings
 [deploy]
 # url = http://localhost:6800/
-project = images
+project = yellow_download
 '''
 
 with open('scrapy.cfg', 'w') as f:

@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+# 这里是必须引入的
+# import robotparser
+
 import scrapy.spiderloader
 import scrapy.statscollectors
 import scrapy.logformatter
@@ -37,18 +41,41 @@ import scrapy.downloadermiddlewares.httpcompression
 import scrapy.downloadermiddlewares.redirect
 import scrapy.downloadermiddlewares.retry
 import scrapy.downloadermiddlewares.robotstxt
-import os
+
 import scrapy.spidermiddlewares.depth
 import scrapy.spidermiddlewares.httperror
 import scrapy.spidermiddlewares.offsite
 import scrapy.spidermiddlewares.referer
 import scrapy.spidermiddlewares.urllength
-from scrapy.pipelines.images import ImagesPipeline
+
 import scrapy.pipelines
+
 import scrapy.core.downloader.handlers.http
 import scrapy.core.downloader.contextfactory
+
+import json
+import time
+import os
+import urllib
+import re
+import scrapy
+import json
+import base64
+from scrapy import cmdline
+import random
+
+from scrapy import signals
+import json
+import os
+import platform
+import re
+import time
+import uuid
+
 import requests
-from lxml import etree
+from pyaria2 import Aria2RPC
+from yellow_download.settings import MAC_DOWNLOAD_PATH
+from yellow_download.settings import WIN_DOWNLOAD_PATH
 
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
@@ -56,5 +83,5 @@ from scrapy.utils.project import get_project_settings
 process = CrawlerProcess(get_project_settings())
 
 # mn52是爬虫名
-process.crawl('mn52')
+process.crawl('mienav_spiders')
 process.start()
