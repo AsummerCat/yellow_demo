@@ -17,7 +17,7 @@ import requests
 from pyaria2 import Aria2RPC
 from yellow_download.settings import MAC_DOWNLOAD_PATH
 from yellow_download.settings import WIN_DOWNLOAD_PATH
-
+# import m3_dl
 '''
 YellowDownload的管道 start   =>aria2调用
 '''
@@ -120,7 +120,7 @@ def check_os():
 Mienav的管道 使用 ffmpeg
 '''
 # 开启多线程下载
-thread_num = 1
+thread_num = 3
 
 
 class MienavDownloadPipeline(object):
@@ -170,16 +170,20 @@ class MienavDownloadPipeline(object):
 
             if not os.path.exists(info_down_path):
                 print("开始下载:{}".format(title))
-                # print("名称:{}=================下载地址:{}".format(title, info_down_path))
+                print("名称:{}=================下载地址:{}".format(title, info_down_path))
                 m3u8_html = item["m3u8_html"]
-                ffmpeg_url = os.path.realpath("ffmpeg/bin/ffmpeg")
+                print(m3u8_html)
+                # ffmpeg_url = os.path.realpath("ffmpeg/bin/ffmpeg")
                 # command = '{} -i {} {}'.format(ffmpeg_url, m3u8_html, info_down_path)
-                command = '{} -i  {} -c copy -bsf:a aac_adtstoasc -movflags +faststart {} -loglevel fatal'.format(ffmpeg_url, m3u8_html, info_down_path)
+                # command = '{} -i  {} -c copy -bsf:a aac_adtstoasc -movflags +faststart {} -loglevel fatal'.format(ffmpeg_url, m3u8_html, info_down_path)
+                # https://pypi.org/search/?q=m3u8
+                command = 'm3_dl {} -o {} -t6'.format(m3u8_html, info_down_path)
+                # 'm3_dl https://qiyiquotv.com/20200705/pNjeSJMv/index.m3u8 -o /Users/cat/Downloads/2020-09-05/騷.mp4 -t6'
                 os.system(command)
                 endtime_wm = time.time()
                 # 执行时间
-                exec_times = (datetime.datetime.fromtimestamp(endtime_wm) - datetime.datetime.fromtimestamp(starttime_wm)).seconds
-                print("{}的下载时间->".format(title), exec_times, "秒")
+                exec_times = (datetime.datetime.fromtimestamp(endtime_wm) - datetime.datetime.fromtimestamp(starttime_wm)).seconds/60
+                print("{}的下载时间->".format(title), exec_times, "分")
             else:
                 print(title + "====================>>>>已存在")
         finally:

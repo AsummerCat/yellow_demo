@@ -7,8 +7,6 @@ import base64
 
 from yellow_download.items import MieNavDownloadItem
 
-
-
 class MienavSpidersSpider(scrapy.Spider):
     name = 'mienav_spiders'
     allowed_domains = ['mienav.com']
@@ -68,7 +66,7 @@ class MienavSpidersSpider(scrapy.Spider):
     def detail_pares(self, response):
         data = response.meta["item"]
         # 获取网页原文
-        detail_info = response.body_as_unicode()
+        detail_info = response.text
         # 获取需要的json字符串
         json_string = detail_info.split("var player_data=")[1].split("</script>")[0]
         # json字符串转换dict
