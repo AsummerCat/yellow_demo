@@ -14,10 +14,10 @@ class MienavSpidersSpider(scrapy.Spider):
     # 网站前缀
     index_url_prefix = "https://www.mienav.com{}"
     # 首页
-    index_url = "https://www.mienav.com/index.php/vod/type/id/106"
+    index_url = "https://www.mienav.com/index.php/vod/type/id/106/page/2"
     # 列表页
-    url_prefix = index_url + "/page/{}.html"
-    start_urls = [index_url+".html"]
+    url_prefix = index_url + "/page/{}"
+    start_urls = [index_url]
 
     # 获取第一页数据及其所有列表
     def parse(self, response):
@@ -30,8 +30,8 @@ class MienavSpidersSpider(scrapy.Spider):
             data['title'] = i.xpath("p/text()").extract()
             data['url'] = self.index_url_prefix.format(i.attrib.get("href"))
             # print(data['title'], data['url'])
-            yield scrapy.Request(data['url'], callback=self.get_detail_ver_html,
-                                 meta={"item": data})
+            # yield scrapy.Request(data['url'], callback=self.get_detail_ver_html,
+            #                      meta={"item": data})
 
             # 获取最大页数
         max_page_html = response.xpath(
@@ -46,16 +46,16 @@ class MienavSpidersSpider(scrapy.Spider):
 
     # # 下一页
     def next_parse(self, response):
+
         index_list = response.xpath(
             "//div[@class='group-contents layui-row']/a[@class='group-item layui-col-md3 m-md6']")
         for i in index_list:
             # 遍历节点
             data = MieNavDownloadItem()
             data['title'] = i.xpath("p/text()").extract()
-            data['url'] = i.attrib.get("href")
-            # 暂停
-            time.sleep(60)
-            yield scrapy.Request(self.index_url_prefix.format(data['url']), callback=self.get_detail_ver_html,
+            data['url'] = self.index_url_prefix.format(i.attrib.get("href"))
+            print(data['title'], data['url'])
+            yield scrapy.Request(data['url'], callback=self.get_detail_ver_html,
                                  meta={"item": data})
 
     # 获取详情页的数据
