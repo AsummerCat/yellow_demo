@@ -14,7 +14,7 @@ class MienavSpidersSpider(scrapy.Spider):
     # 网站前缀
     index_url_prefix = "https://www.mienav.com{}"
     # 首页
-    index_url = "https://www.mienav.com/index.php/vod/type/id/106/page/2"
+    index_url = "https://www.mienav.com/index.php/vod/type/id/106"
     # 列表页
     url_prefix = index_url + "/page/{}"
     start_urls = [index_url]
@@ -42,11 +42,11 @@ class MienavSpidersSpider(scrapy.Spider):
         if max_page:
             for i in range(2, int(max_page) + 1):
                 next_url = self.url_prefix.format(str(i))
+                time.sleep(500)
                 yield scrapy.Request(next_url, callback=self.next_parse)
 
     # # 下一页
     def next_parse(self, response):
-
         index_list = response.xpath(
             "//div[@class='group-contents layui-row']/a[@class='group-item layui-col-md3 m-md6']")
         for i in index_list:
@@ -56,7 +56,7 @@ class MienavSpidersSpider(scrapy.Spider):
             data['url'] = self.index_url_prefix.format(i.attrib.get("href"))
             print(data['title'], data['url'])
             yield scrapy.Request(data['url'], callback=self.get_detail_ver_html,
-                                 meta={"item": data})
+                                meta={"item": data})
 
     # 获取详情页的数据
     def get_detail_ver_html(self, response):
