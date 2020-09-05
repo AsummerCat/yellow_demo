@@ -1,0 +1,3 @@
+打包命令:
+
+pyinstaller -F --add-data=mime.types;scrapy --add-data=VERSION;scrapy --add-data=yellow_download/*py;yellow_download --add-data=yellow_download/spiders/*.py;yellow_download/spiders --runtime-hook=generate_cfg.py crawl.py
