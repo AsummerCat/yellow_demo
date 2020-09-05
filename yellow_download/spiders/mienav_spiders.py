@@ -14,10 +14,10 @@ class MienavSpidersSpider(scrapy.Spider):
     # 网站前缀
     index_url_prefix = "https://www.mienav.com{}"
     # 首页
-    index_url = "https://www.mienav.com/index.php/vod/type/id/106.html"
+    index_url = "https://www.mienav.com/index.php/vod/type/id/106"
     # 列表页
     url_prefix = index_url + "/page/{}.html"
-    start_urls = [index_url]
+    start_urls = [index_url+".html"]
 
     # 获取第一页数据及其所有列表
     def parse(self, response):
@@ -42,7 +42,7 @@ class MienavSpidersSpider(scrapy.Spider):
         if max_page:
             for i in range(2, int(max_page) + 1):
                 next_url = self.url_prefix.format(str(i))
-                # yield scrapy.Request(next_url, callback=self.next_parse)
+                yield scrapy.Request(next_url, callback=self.next_parse)
 
     # # 下一页
     def next_parse(self, response):
