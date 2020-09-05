@@ -4,16 +4,14 @@ import re
 import scrapy
 import json
 import base64
-# import urllib2
 
 from yellow_download.items import MieNavDownloadItem
+
 
 
 class MienavSpidersSpider(scrapy.Spider):
     name = 'mienav_spiders'
     allowed_domains = ['mienav.com']
-    # 详细页
-    # detail_url_prefix = "https://www.mienav.com{}"
     # 网站前缀
     index_url_prefix = "https://www.mienav.com{}"
     # 首页

@@ -9,6 +9,9 @@ import platform
 import re
 import time
 import uuid
+import threading
+import datetime
+import time
 
 import requests
 from pyaria2 import Aria2RPC
@@ -18,6 +21,7 @@ from yellow_download.settings import WIN_DOWNLOAD_PATH
 '''
 YellowDownload的管道 start   =>aria2调用
 '''
+
 
 class YellowDownloadPipeline(object):
     def process_item(self, item, spider):
@@ -115,39 +119,68 @@ def check_os():
 '''
 Mienav的管道 使用 ffmpeg
 '''
+# 开启多线程下载
+thread_num = 1
 
 
 class MienavDownloadPipeline(object):
-    def process_item(self, item, spider):
-        title = "".join(re.findall('[\u4e00-\u9fa5a-zA-Z0-9]+', item['title'][0], re.S))
-        path = ""
-        info_os = check_os()
-        if "Windows" == info_os:
-            path = WIN_DOWNLOAD_PATH
-        elif "macOS" == info_os:
-            path = MAC_DOWNLOAD_PATH
-        else:
-            print("暂未识别系统无法下载内容")
-        # 下载本地目录
-        item["file_path"] = path
-        # 判断文件夹是否存在 不存在直接makedirs 创建多级目录
-        if not os.path.exists(path):
-            os.makedirs(path)
-        # 获取下载的文件名称
-        if not len(title) > 0:
-            title = str(uuid.uuid1()) + ".mp4"
-        else:
-            title = title + ".mp4"
-        info_down_path = path + "/" + title
 
-        if not os.path.exists(info_down_path):
-            print("开始下载:{}".format(title))
-            m3u8_html = item["m3u8_html"]
-            command = 'ffmpeg -i {} {}'.format(m3u8_html, info_down_path)
-            os.system(command)
-            # print("名称:{}=================下载地址:{}".format(title, info_down_path))
-            print("下一步")
-            # print("名称:{}=================下载地址:{}".format(title, info_down_path))
-        else:
-            print(title + "====================>>>>已存在")
+    def process_item(self, item, spider):
+        self.thread_download(item)
         return item
+
+    # 判断你是否开启线程
+    def thread_download(self, item):
+        global thread_num
+        if thread_num > 0:
+            # t1 = threading.Thread(target=self.go_thread_download, args=(item,))
+            # t1.start()
+            self.go_thread_download(item)
+        else:
+            time.sleep(200)
+            self.thread_download(item)
+
+    # 开启多线程下载
+    def go_thread_download(self, item):
+
+        global thread_num
+        try:
+            starttime_wm = time.time()
+            thread_num = thread_num - 1
+            title = "".join(re.findall('[\u4e00-\u9fa5a-zA-Z0-9]+', item['title'][0], re.S))
+            path = ""
+            info_os = check_os()
+            if "Windows" == info_os:
+                path = WIN_DOWNLOAD_PATH
+            elif "macOS" == info_os:
+                path = MAC_DOWNLOAD_PATH
+            else:
+                print("暂未识别系统无法下载内容")
+            # 下载本地目录
+            item["file_path"] = path
+            # 判断文件夹是否存在 不存在直接makedirs 创建多级目录
+            if not os.path.exists(path):
+                os.makedirs(path)
+            # 获取下载的文件名称
+            if not len(title) > 0:
+                title = str(uuid.uuid1()) + ".mp4"
+            else:
+                title = title + ".mp4"
+            info_down_path = path + "/" + title
+
+            if not os.path.exists(info_down_path):
+                print("开始下载:{}".format(title))
+                # print("名称:{}=================下载地址:{}".format(title, info_down_path))
+                m3u8_html = item["m3u8_html"]
+                ffmpeg_url = os.path.realpath("ffmpeg/bin/ffmpeg")
+                # command = '{} -i {} {}'.format(ffmpeg_url, m3u8_html, info_down_path)
+                command = '{} -i  {} -c copy -bsf:a aac_adtstoasc -movflags +faststart {} -loglevel fatal'.format(ffmpeg_url, m3u8_html, info_down_path)
+                os.system(command)
+                endtime_wm = time.time()
+                # 执行时间
+                exec_times = (datetime.datetime.fromtimestamp(endtime_wm) - datetime.datetime.fromtimestamp(starttime_wm)).seconds
+                print("{}的下载时间->".format(title), exec_times, "秒")
+            else:
+                print(title + "====================>>>>已存在")
+        finally:
+            thread_num = thread_num + 1
