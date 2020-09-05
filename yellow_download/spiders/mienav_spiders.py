@@ -4,6 +4,7 @@ import re
 import scrapy
 import json
 import base64
+import time
 
 from yellow_download.items import MieNavDownloadItem
 
@@ -52,6 +53,8 @@ class MienavSpidersSpider(scrapy.Spider):
             data = MieNavDownloadItem()
             data['title'] = i.xpath("p/text()").extract()
             data['url'] = i.attrib.get("href")
+            # 暂停
+            time.sleep(60)
             yield scrapy.Request(self.index_url_prefix.format(data['url']), callback=self.get_detail_ver_html,
                                  meta={"item": data})
 

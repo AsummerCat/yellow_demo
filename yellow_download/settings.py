@@ -104,7 +104,7 @@ RETRY_HTTP_CODES = [500, 502, 503, 504, 400, 403, 404, 408]
 
 # # 定义保存路径
 WIN_DOWNLOAD_PATH = 'E:\测试下载'
-MAC_DOWNLOAD_PATH = '/Users/cat/Downloads/2020-09-05'
+MAC_DOWNLOAD_PATH = '/Users/cat/Downloads/2020-09-06'
 
 # 设置日志级别
 LOG_LEVEL = 'INFO'
