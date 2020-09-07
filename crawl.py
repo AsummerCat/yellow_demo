@@ -82,6 +82,7 @@ from scrapy.utils.project import get_project_settings
 
 process = CrawlerProcess(get_project_settings())
 
-# mn52是爬虫名
+# 爬虫名 run move
 process.crawl('mienav_spiders')
+process.crawl('test')
 process.start()
