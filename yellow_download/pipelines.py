@@ -124,7 +124,6 @@ Mienav的管道 使用 ffmpeg
 
 # 开启多线程下载
 def go_thread_download(item):
-    try:
         title = "".join(re.findall('[\u4e00-\u9fa5a-zA-Z0-9]+', item['title'][0], re.S))
         starttime_wm = time.time()
         path = ""
@@ -165,8 +164,6 @@ def go_thread_download(item):
             print("{}的下载时间->".format(title), exec_times, "分")
         else:
             print(title + "====================>>>>已存在")
-    finally:
-        print("")
 
 
 # 判断你是否开启线程
