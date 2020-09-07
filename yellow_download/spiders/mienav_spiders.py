@@ -82,6 +82,7 @@ class MienavSpidersSpider(scrapy.Spider):
         # escape解密 获取解密后的m3u8_url
         m3u8_url = urllib.parse.unquote(m3u8_base64decode_url.encode().decode('unicode-escape'))
         data["m3u8_html"] = m3u8_url
+        # print(m3u8_url)
         # 完整路径
         # https://www.mienav.com/addons/dplayer/?url=https://qiyiquotv.com/20200704/AJLVnsqL/index.m3u8
         yield data

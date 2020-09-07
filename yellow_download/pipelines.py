@@ -193,7 +193,7 @@ pool1 = Pool(processes=cpu_count)
 class MienavDownloadPipeline(object):
 
     def process_item(self, item, spider):
-        pool1.apply_async(go_thread_download, (item,))
-        # go_thread_download(item)
+        # pool1.apply_async(go_thread_download, (item,))
+        go_thread_download(item)
         # apply
         return item
