@@ -42,11 +42,15 @@ class MienavSpidersSpider(scrapy.Spider):
         if max_page:
             for i in range(2, int(max_page) + 1):
                 next_url = self.url_prefix.format(str(i))
-                time.sleep(500)
                 yield scrapy.Request(next_url, callback=self.next_parse)
 
     # # 下一页
     def next_parse(self, response):
+        print("-----------------------------")
+        print("-----------------------------")
+        print("下一页" + response.url)
+        print("-----------------------------")
+        print("-----------------------------")
         index_list = response.xpath(
             "//div[@class='group-contents layui-row']/a[@class='group-item layui-col-md3 m-md6']")
         for i in index_list:

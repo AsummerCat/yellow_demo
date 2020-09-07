@@ -18,6 +18,7 @@ from yellow_download.settings import MAC_DOWNLOAD_PATH
 from yellow_download.settings import WIN_DOWNLOAD_PATH
 import m3_dl
 from multiprocessing import Pool
+
 '''
 YellowDownload的管道 start   =>aria2调用
 '''
@@ -119,6 +120,8 @@ def check_os():
 '''
 Mienav的管道 使用 ffmpeg
 '''
+
+
 # 开启多线程下载
 def go_thread_download(item):
     try:
@@ -155,14 +158,6 @@ def go_thread_download(item):
             parser = m3_dl.createParse()
             # 运行下载
             m3_dl.main(parser.parse_args(command.split()))
-
-            # 判断间隔时间内 文件是否未发生改变
-            flag = True
-            while flag:
-                old_size = os.path.getsize(info_down_path)
-                time.sleep(50)
-                if old_size == os.path.getsize(info_down_path):
-                    flag = False
             endtime_wm = time.time()
             # 执行时间
             exec_times = (datetime.datetime.fromtimestamp(endtime_wm) - datetime.datetime.fromtimestamp(
@@ -180,20 +175,41 @@ def thread_download(self, item):
     pool1.apply(self.go_thread_download, (item,))
 
 
-
-
 # CPU核心线程数
 cpu_count = multiprocessing.cpu_count()
 print("CPU核心线程数", cpu_count)
 # 开启进程池
 pool1 = Pool(processes=cpu_count)
+
+
 # pool1 = Pool(1)
 
 
 class MienavDownloadPipeline(object):
 
     def process_item(self, item, spider):
-        # pool1.apply_async(go_thread_download, (item,))
-        go_thread_download(item)
-        # apply
+        title = "".join(re.findall('[\u4e00-\u9fa5a-zA-Z0-9]+', item['title'][0], re.S))
+        info_os = check_os()
+        if "Windows" == info_os:
+            path = WIN_DOWNLOAD_PATH
+        elif "macOS" == info_os:
+            path = MAC_DOWNLOAD_PATH
+        else:
+            print("暂未识别系统无法下载内容")
+            return item
+        # 下载本地目录
+        item["file_path"] = path
+        # 判断文件夹是否存在 不存在直接makedirs 创建多级目录
+        if not os.path.exists(path):
+            os.makedirs(path)
+        # 获取下载的文件名称
+        if not len(title) > 0:
+            title = str(uuid.uuid1()) + ".mp4"
+        else:
+            title = title + ".mp4"
+        info_down_path = path + "/" + title
+
+        if not os.path.exists(info_down_path):
+            pool1.apply_async(go_thread_download, (item,))
+            time.sleep(300)
         return item
