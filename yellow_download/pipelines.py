@@ -211,5 +211,5 @@ class MienavDownloadPipeline(object):
 
         if not os.path.exists(info_down_path):
             pool1.apply_async(go_thread_download, (item,))
-            time.sleep(300)
+            time.sleep(150)
         return item
