@@ -104,7 +104,6 @@ class YellowDownloadDownloaderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-
 class my_user_agent(object):
     pcUserAgent = [
         # safari 5.1 – Windows
@@ -132,5 +131,6 @@ class my_user_agent(object):
         # Opera 11.11 – Windows
         "Opera/9.80 (Windows NT 6.1; U; en) Presto/2.8.131 Version/11.11"
     ]
+
     def process_request(self, request, spider):
         request.headers['User_Agent'] = random.choice(self.pcUserAgent)

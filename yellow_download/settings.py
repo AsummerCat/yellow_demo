@@ -108,5 +108,3 @@ MAC_DOWNLOAD_PATH = '/Users/cat/Downloads/2020-09-06'
 
 # 设置日志级别
 LOG_LEVEL = 'INFO'
-
-

@@ -9,8 +9,8 @@ import time
 from yellow_download.items import MieNavDownloadItem
 
 
-class MienavSpidersSpider(scrapy.Spider):
-    name = 'mienav_spiders'
+class test(scrapy.Spider):
+    name = 'test'
     allowed_domains = ['mienav.com']
     # 网站前缀
     index_url_prefix = "https://www.mienav.com{}"
