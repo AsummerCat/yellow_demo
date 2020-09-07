@@ -71,7 +71,7 @@ import platform
 import re
 import time
 import uuid
-
+import m3_dl
 import requests
 from pyaria2 import Aria2RPC
 from yellow_download.settings import MAC_DOWNLOAD_PATH
