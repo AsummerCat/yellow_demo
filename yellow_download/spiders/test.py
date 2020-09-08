@@ -30,7 +30,7 @@ class test(scrapy.Spider):
             data = MieNavDownloadItem()
             data['title'] = i.xpath("p/text()").extract()
             data['url'] = self.index_url_prefix.format(i.attrib.get("href"))
-            print(data['title'], data['url'])
+            # print(data['title'], data['url'])
             yield scrapy.Request(data['url'], callback=self.get_detail_ver_html,
                                  meta={"item": data})
 
@@ -59,7 +59,7 @@ class test(scrapy.Spider):
             data = MieNavDownloadItem()
             data['title'] = i.xpath("p/text()").extract()
             data['url'] = self.index_url_prefix.format(i.attrib.get("href"))
-            print(data['title'], data['url'])
+            # print(data['title'], data['url'])
             yield scrapy.Request(data['url'], callback=self.get_detail_ver_html,
                                  meta={"item": data})
 
