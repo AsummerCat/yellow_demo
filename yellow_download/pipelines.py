@@ -9,7 +9,6 @@ import os
 import platform
 import re
 import uuid
-import datetime
 import time
 
 import requests
@@ -124,46 +123,39 @@ Mienav的管道 使用 ffmpeg
 
 # 开启多线程下载
 def go_thread_download(item):
-        title = "".join(re.findall('[\u4e00-\u9fa5a-zA-Z0-9]+', item['title'][0], re.S))
-        starttime_wm = time.time()
-        path = ""
-        info_os = check_os()
-        if "Windows" == info_os:
-            path = WIN_DOWNLOAD_PATH
-        elif "macOS" == info_os:
-            path = MAC_DOWNLOAD_PATH
-        else:
-            print("暂未识别系统无法下载内容")
-            return
-        # 下载本地目录
-        item["file_path"] = path
-        # 判断文件夹是否存在 不存在直接makedirs 创建多级目录
-        if not os.path.exists(path):
-            os.makedirs(path)
-        # 获取下载的文件名称
-        if not len(title) > 0:
-            title = str(uuid.uuid1()) + ".mp4"
-        else:
-            title = title + ".mp4"
-        info_down_path = path + "/" + title
+    title = "".join(re.findall('[\u4e00-\u9fa5a-zA-Z0-9]+', item['title'][0], re.S))
+    info_os = check_os()
+    if "Windows" == info_os:
+        path = WIN_DOWNLOAD_PATH
+    elif "macOS" == info_os:
+        path = MAC_DOWNLOAD_PATH
+    else:
+        print("暂未识别系统无法下载内容")
+        return
+    # 下载本地目录
+    item["file_path"] = path
+    # 判断文件夹是否存在 不存在直接makedirs 创建多级目录
+    if not os.path.exists(path):
+        os.makedirs(path)
+    # 获取下载的文件名称
+    if not len(title) > 0:
+        title = str(uuid.uuid1()) + ".mp4"
+    else:
+        title = title + ".mp4"
+    info_down_path = path + "/" + title
 
-        if not os.path.exists(info_down_path):
-            print("开始下载:{}".format(title))
-            # print("名称:{}=================下载地址:{}".format(title, info_down_path))
-            m3u8_html = item["m3u8_html"]
-            # command = 'm3_dl {} -o {} -t6'.format(m3u8_html, info_down_path)
-            # os.system(command)
-            command = '{} -o={} -t=6'.format(m3u8_html, info_down_path)
-            parser = m3_dl.createParse()
-            # 运行下载
-            m3_dl.main(parser.parse_args(command.split()))
-            endtime_wm = time.time()
-            # 执行时间
-            exec_times = (datetime.datetime.fromtimestamp(endtime_wm) - datetime.datetime.fromtimestamp(
-                starttime_wm)).seconds / 60
-            print("{}的下载时间->".format(title), exec_times, "分")
-        else:
-            print(title + "====================>>>>已存在")
+    if not os.path.exists(info_down_path):
+        print("开始下载:{}".format(title))
+        # print("名称:{}=================下载地址:{}".format(title, info_down_path))
+        m3u8_html = item["m3u8_html"]
+        # command = 'm3_dl {} -o {} -t6'.format(m3u8_html, info_down_path)
+        # os.system(command)
+        command = '{} -o={} -t=6'.format(m3u8_html, info_down_path)
+        parser = m3_dl.createParse()
+        # 运行下载
+        m3_dl.main(parser.parse_args(command.split()))
+    else:
+        print(title + "====================>>>>已存在")
 
 
 # 判断你是否开启线程

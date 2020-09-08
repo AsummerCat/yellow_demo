@@ -21,7 +21,7 @@ class MienavSpidersSpider(scrapy.Spider):
     start_urls = [index_url]
 
     # 获取第一页数据及其所有列表
-    def parse(self, response):
+    def parse(self, response, **kwargs):
 
         index_list = response.xpath(
             "//div[@class='group-contents layui-row']/a[@class='group-item layui-col-md3 m-md6']")
@@ -30,7 +30,6 @@ class MienavSpidersSpider(scrapy.Spider):
             data = MieNavDownloadItem()
             data['title'] = i.xpath("p/text()").extract()
             data['url'] = self.index_url_prefix.format(i.attrib.get("href"))
-            print(data['title'], data['url'])
             yield scrapy.Request(data['url'], callback=self.get_detail_ver_html,
                                  meta={"item": data})
 
@@ -59,7 +58,6 @@ class MienavSpidersSpider(scrapy.Spider):
             data = MieNavDownloadItem()
             data['title'] = i.xpath("p/text()").extract()
             data['url'] = self.index_url_prefix.format(i.attrib.get("href"))
-            print(data['title'], data['url'])
             yield scrapy.Request(data['url'], callback=self.get_detail_ver_html,
                                  meta={"item": data})
 
